@@ -1,5 +1,11 @@
+// ============================
+// Variável de histórico
+// ============================
 let history = []; // guarda o histórico de nós
 
+// ============================
+// Função para exibir um nó
+// ============================
 function displayNode(nodeKey) {
   const node = decisionTree[nodeKey];
   if (!node) return;
@@ -35,7 +41,7 @@ function displayNode(nodeKey) {
   }
 
   // Opções do nó
-  if (node.options.length === 0) {
+  if (!node.options || node.options.length === 0) {
     const endText = document.createElement("p");
     endText.textContent = "Fim da decisão.";
     endText.classList.add("end-text");
@@ -61,6 +67,7 @@ function displayNode(nodeKey) {
     optionsContainer.appendChild(button);
   });
 }
+
 
 const decisionTree = {
   start: {
@@ -199,4 +206,5 @@ const decisionTree = {
 
 // Chamada inicial da árvore
 displayNode("start");
+
 
