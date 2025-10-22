@@ -1,3 +1,20 @@
+/* Botão de voltar */
+.back-button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+
+.back-button:hover {
+  background-color: #c0392b;
+}
+
 body {
   font-family: 'Segoe UI', Arial, sans-serif;
   margin: 0;
@@ -83,3 +100,4 @@ main {
   color: #555;
   margin-top: 1rem;
 }
+
