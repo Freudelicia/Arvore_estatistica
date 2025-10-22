@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Árvore de Decisão Estatística</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header id="header">Tomada de decisão estatística</header>
+
+  <main>
+    <div id="image-container">
+      <img id="node-image" src="" alt="Imagem ilustrativa">
+    </div>
+
+    <div id="question-container">
+      <p id="node-text"></p>
+    </div>
+
+    <div id="options-container"></div>
+  </main>
+
+  <script src="tree.js"></script>
+  <script>
+    // Função principal para exibir os nós da árvore
+    function displayNode(nodeKey) {
+      const node = decisionTree[nodeKey];
+      if (!node) return;
+
+      // Atualiza cabeçalho
+      document.getElementById('header').textContent = node.header || "Tomada de decisão estatística";
+
+      // Atualiza imagem
+      document.getElementById('node-image').src = node.image || "";
+
+      // Atualiza texto
+      document.getElementById('node-text').textContent = node.text;
+
+      // Atualiza opções
+      const optionsContainer = document.getElementById('options-container');
+      optionsContainer.innerHTML = "";
+
+      if (node.options.length === 0) {
+        const endText = document.createElement("p");
+        endText.textContent = "Fim da decisão.";
+        endText.classList.add("end-text");
+        optionsContainer.appendChild(endText);
+        return;
+      }
+
+      node.options.forEach(option => {
+        const button = document.createElement("button");
+        button.classList.add("option-button");
+
+        const img = document.createElement("img");
+        img.src = option.image || "";
+        img.alt = option.text;
+        img.classList.add("option-image");
+
+        const label = document.createElement("span");
+        label.textContent = option.text;
+
+        button.appendChild(img);
+        button.appendChild(label);
+        button.addEventListener("click", () => displayNode(option.next));
+        optionsContainer.appendChild(button);
+      });
+    }
+
+    // Inicia na raiz da árvore
+    displayNode("start");
+  </script>
+</body>
+</html>
