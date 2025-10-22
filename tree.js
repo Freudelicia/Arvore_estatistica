@@ -1,19 +1,83 @@
+let history = []; // guarda o histórico de nós
+
+function displayNode(nodeKey) {
+  const node = decisionTree[nodeKey];
+  if (!node) return;
+
+  // Se não for o primeiro nó, adiciona ao histórico
+  if (history.length === 0 || history[history.length - 1] !== nodeKey) {
+    history.push(nodeKey);
+  }
+
+  // Atualiza cabeçalho
+  document.getElementById('header').textContent = node.header || "Tomada de decisão estatística";
+
+  // Atualiza imagem
+  document.getElementById('node-image').src = node.image || "";
+
+  // Atualiza texto
+  document.getElementById('node-text').textContent = node.text;
+
+  // Atualiza opções
+  const optionsContainer = document.getElementById('options-container');
+  optionsContainer.innerHTML = "";
+
+  // Botão de voltar, só se houver histórico
+  if (history.length > 1) {
+    const backButton = document.createElement("button");
+    backButton.textContent = "← Voltar";
+    backButton.classList.add("back-button");
+    backButton.addEventListener("click", () => {
+      history.pop(); // remove o nó atual
+      displayNode(history.pop()); // volta para o nó anterior
+    });
+    optionsContainer.appendChild(backButton);
+  }
+
+  // Opções do nó
+  if (node.options.length === 0) {
+    const endText = document.createElement("p");
+    endText.textContent = "Fim da decisão.";
+    endText.classList.add("end-text");
+    optionsContainer.appendChild(endText);
+    return;
+  }
+
+  node.options.forEach(option => {
+    const button = document.createElement("button");
+    button.classList.add("option-button");
+
+    const img = document.createElement("img");
+    img.src = option.image || "";
+    img.alt = option.text;
+    img.classList.add("option-image");
+
+    const label = document.createElement("span");
+    label.textContent = option.text;
+
+    button.appendChild(img);
+    button.appendChild(label);
+    button.addEventListener("click", () => displayNode(option.next));
+    optionsContainer.appendChild(button);
+  });
+}
+
 const decisionTree = {
   start: {
     header: "Tomada de decisão estatística",
     text: "Qual é o objetivo da sua pesquisa?",
     image: "img/estatistica.jpg",
     options: [
-      { text: "Descrever / Avaliar", image: "img/descrever.jpg", next: "descrever" },
+      { text: "Descrever ou Avaliar", image: "img/descrever.jpg", next: "descrever" },
       { text: "Correlacionar", image: "img/correlacionar.jpg", next: "correlacionar" },
       { text: "Comparar", image: "img/comparar.jpg", next: "comparar" },
       { text: "Predizer", image: "img/predizer.jpg", next: "predizer" },
-      { text: "Validar / Adaptar (Psicometria)", image: "img/validar.jpg", next: "validar" }
+      { text: "Validar ou Adaptar (Psicometria)", image: "img/validar.jpg", next: "validar" }
     ]
   },
 
   descrever: {
-    header: "Descrição / Avaliação",
+    header: "Descrição ou Avaliação",
     text: "Deseja apenas apresentar estatísticas descritivas ou realizar análises inferenciais?",
     image: "img/descrever.jpg",
     options: [
@@ -132,3 +196,4 @@ const decisionTree = {
     options: []
   }
 };
+
