@@ -197,3 +197,6 @@ const decisionTree = {
   }
 };
 
+// Chamada inicial da árvore
+displayNode("start");
+
