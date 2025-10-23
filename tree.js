@@ -1,46 +1,40 @@
-// ============================
-// Variável de histórico
-// ============================
 let history = []; // guarda o histórico de nós
 
-// ============================
-// Função para exibir um nó
-// ============================
 function displayNode(nodeKey) {
   const node = decisionTree[nodeKey];
   if (!node) return;
 
-  // Se não for o primeiro nó, adiciona ao histórico
+  // Atualiza o histórico
   if (history.length === 0 || history[history.length - 1] !== nodeKey) {
     history.push(nodeKey);
   }
 
   // Atualiza cabeçalho
-  document.getElementById('header').textContent = node.header || "Tomada de decisão estatística";
+  document.getElementById("header").textContent = node.header || "Tomada de decisão estatística";
 
   // Atualiza imagem
-  document.getElementById('node-image').src = node.image || "";
+  document.getElementById("node-image").src = node.image || "";
 
   // Atualiza texto
-  document.getElementById('node-text').textContent = node.text;
+  document.getElementById("node-text").textContent = node.text;
 
   // Atualiza opções
-  const optionsContainer = document.getElementById('options-container');
+  const optionsContainer = document.getElementById("options-container");
   optionsContainer.innerHTML = "";
 
-  // Botão de voltar, só se houver histórico
+  // Botão de voltar (aparece se não for o primeiro nó)
   if (history.length > 1) {
     const backButton = document.createElement("button");
     backButton.textContent = "← Voltar";
     backButton.classList.add("back-button");
     backButton.addEventListener("click", () => {
       history.pop(); // remove o nó atual
-      displayNode(history.pop()); // volta para o nó anterior
+      displayNode(history.pop()); // volta para o anterior
     });
     optionsContainer.appendChild(backButton);
   }
 
-  // Opções do nó
+  // Se não houver opções, exibe texto final
   if (!node.options || node.options.length === 0) {
     const endText = document.createElement("p");
     endText.textContent = "Fim da decisão.";
@@ -49,6 +43,7 @@ function displayNode(nodeKey) {
     return;
   }
 
+  // Cria os botões de opção
   node.options.forEach(option => {
     const button = document.createElement("button");
     button.classList.add("option-button");
@@ -68,23 +63,23 @@ function displayNode(nodeKey) {
   });
 }
 
-
+// ===== Estrutura da árvore =====
 const decisionTree = {
   start: {
     header: "Tomada de decisão estatística",
     text: "Qual é o objetivo da sua pesquisa?",
     image: "img/estatistica.jpg",
     options: [
-      { text: "Descrever ou Avaliar", image: "img/descrever.jpg", next: "descrever" },
+      { text: "Descrever / Avaliar", image: "img/descrever.jpg", next: "descrever" },
       { text: "Correlacionar", image: "img/correlacionar.jpg", next: "correlacionar" },
       { text: "Comparar", image: "img/comparar.jpg", next: "comparar" },
       { text: "Predizer", image: "img/predizer.jpg", next: "predizer" },
-      { text: "Validar ou Adaptar (Psicometria)", image: "img/validar.jpg", next: "validar" }
+      { text: "Validar / Adaptar (Psicometria)", image: "img/validar.jpg", next: "validar" }
     ]
   },
 
   descrever: {
-    header: "Descrição ou Avaliação",
+    header: "Descrição / Avaliação",
     text: "Deseja apenas apresentar estatísticas descritivas ou realizar análises inferenciais?",
     image: "img/descrever.jpg",
     options: [
@@ -204,7 +199,5 @@ const decisionTree = {
   }
 };
 
-// Chamada inicial da árvore
+// ===== Inicializa a árvore =====
 displayNode("start");
-
-
