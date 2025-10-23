@@ -1,4 +1,88 @@
-/* Botão de voltar */
+/* ===== Layout Geral ===== */
+body {
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f6fa;
+  color: #2c3e50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ===== Cabeçalho ===== */
+header {
+  background-color: #004aad;
+  color: white;
+  width: 100%;
+  text-align: center;
+  padding: 1rem 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* ===== Área Principal ===== */
+#main-container {
+  max-width: 700px;
+  text-align: center;
+  margin-top: 2rem;
+  padding: 1rem;
+}
+
+.main-image {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 16px;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.node-text {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ===== Botões de Opção ===== */
+.options-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.option-button {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  width: 90%;
+  max-width: 500px;
+  padding: 0.75rem 1rem;
+  background-color: white;
+  border: 2px solid #004aad;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.option-button:hover {
+  background-color: #004aad;
+  color: white;
+  transform: scale(1.02);
+}
+
+.option-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* ===== Botão Voltar ===== */
 .back-button {
   background-color: #e74c3c;
   color: white;
@@ -15,89 +99,9 @@
   background-color: #c0392b;
 }
 
-body {
-  font-family: 'Segoe UI', Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f5f6fa;
-  color: #333;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: 100vh;
-}
-
-header {
-  width: 100%;
-  background-color: #2c3e50;
-  color: white;
-  text-align: center;
-  padding: 1.2rem 0;
-  font-size: 1.4rem;
-  font-weight: 600;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-main {
-  width: 90%;
-  max-width: 800px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-#image-container img {
-  width: 100%;
-  max-height: 300px;
-  object-fit: cover;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-#question-container {
-  margin: 1.5rem 0;
-  font-size: 1.2rem;
-}
-
-#options-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
-}
-
-.option-button {
-  background-color: #ecf0f1;
-  border: 2px solid #bdc3c7;
-  border-radius: 10px;
-  padding: 0.8rem;
-  width: 200px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.option-button:hover {
-  background-color: #dfe6e9;
-  transform: scale(1.03);
-}
-
-.option-image {
-  width: 100%;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 0.5rem;
-}
-
-.option-button span {
-  font-weight: 500;
-}
-
+/* ===== Texto Final ===== */
 .end-text {
+  font-size: 1rem;
   font-style: italic;
   color: #555;
-  margin-top: 1rem;
 }
-
