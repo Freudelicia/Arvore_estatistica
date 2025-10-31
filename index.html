@@ -1,20 +1,19 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tomada de Decisão Estatística</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Árvore de Tomada de Decisão Estatística</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header id="header">Tomada de decisão estatística</header>
-
-  <main id="main-container">
-    <img id="node-image" src="img/estatistica.jpg" alt="Imagem ilustrativa" class="main-image">
-    <div id="node-text" class="node-text">Qual é o objetivo da sua pesquisa?</div>
-    <div id="options-container" class="options-container"></div>
-  </main>
-
+  <div id="app">
+    <h1 id="node-header"></h1>
+    <p id="node-text"></p>
+    <img id="node-image" src="" alt="Imagem ilustrativa" />
+    <div id="options"></div>
+    <button id="back-button" style="display:none;">⬅️ Voltar</button>
+  </div>
   <script src="tree.js"></script>
 </body>
 </html>
