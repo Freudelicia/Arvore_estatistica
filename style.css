@@ -1,107 +1,85 @@
-/* ===== Layout Geral ===== */
 body {
-  font-family: "Segoe UI", Tahoma, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f5f6fa;
-  color: #2c3e50;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f5f8ff;
+  color: #222;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
+  height: 100vh;
 }
 
-/* ===== Cabeçalho ===== */
-header {
-  background-color: #004aad;
-  color: white;
-  width: 100%;
+#app {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  max-width: 600px;
   text-align: center;
-  padding: 1rem 0;
-  font-size: 1.5rem;
-  font-weight: bold;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* ===== Área Principal ===== */
-#main-container {
-  max-width: 700px;
-  text-align: center;
-  margin-top: 2rem;
-  padding: 1rem;
-}
-
-.main-image {
+#node-image {
   width: 100%;
-  max-height: 300px;
+  max-height: 250px;
   object-fit: cover;
-  border-radius: 16px;
-  margin-bottom: 1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-}
-
-.node-text {
-  font-size: 1.2rem;
-  margin-bottom: 1.5rem;
-}
-
-/* ===== Botões de Opção ===== */
-.options-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
+  border-radius: 1rem;
+  margin: 1rem 0;
 }
 
 .option-button {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 1rem;
-  width: 90%;
-  max-width: 500px;
-  padding: 0.75rem 1rem;
-  background-color: white;
-  border: 2px solid #004aad;
-  border-radius: 12px;
+  display: block;
+  width: 100%;
+  margin: 0.5rem 0;
+  padding: 1rem;
+  border: none;
+  border-radius: 1rem;
+  background: #004aad;
+  color: white;
   cursor: pointer;
-  font-weight: 600;
-  text-align: left;
-  transition: all 0.2s ease;
+  transition: background 0.3s ease;
 }
 
 .option-button:hover {
-  background-color: #004aad;
-  color: white;
-  transform: scale(1.02);
+  background: #0070f0;
 }
 
-.option-image {
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-/* ===== Botão Voltar ===== */
-.back-button {
-  background-color: #e74c3c;
-  color: white;
+#back-button {
+  background: #ccc;
   border: none;
-  border-radius: 8px;
-  padding: 0.5rem 1rem;
-  margin-bottom: 1rem;
+  padding: 0.7rem 1.5rem;
+  border-radius: 1rem;
   cursor: pointer;
-  font-weight: bold;
-  transition: all 0.2s ease;
+  margin-top: 1rem;
 }
 
-.back-button:hover {
-  background-color: #c0392b;
+#back-button:hover {
+  background: #999;
 }
 
-/* ===== Texto Final ===== */
-.end-text {
-  font-size: 1rem;
-  font-style: italic;
-  color: #555;
+/* ===== Tooltip ===== */
+.tooltip {
+  position: relative;
+  cursor: help;
+  border-bottom: 1px dotted #004aad;
+}
+
+.tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 10;
+}
+
+.tooltip:hover::after {
+  opacity: 1;
 }
