@@ -48,12 +48,34 @@ const decisionTree = {
       { text: "Desvio Padrão", next: "final_descr" },
       { text: "Média", next: "final_descr" },
       { text: "Mediana", next: "final_descr" }
+      { text: "Distribuição", next: "shapiro" }
     ]
   },
+  
+ shapiro: {
+    header: "Distribuição",
+    text: "A distribuição da amostra é verificada por teste Shapiro-Wilk:",
+    image: "img/medidas.jpg",
+    text: 'Shapiro-Wilk avalia a distribuição em parmétrica e não paramétrica",
+   options: [
+   { text: "p valor maior que 0,05", next: "normal" },
+   { text: "p valor menor  ou igual que 0,05 ", next: "n_normal" },
+      ]
+  },
 
+   normal: {
+    header: "Distribuição paramétrica",
+    text: "A distribuição da amostra é paramétrica, não há evidências que rejeitem a hipótese de distribuição normal:",
+    image: "img/medidas.jpg",
+  },
+n_normal: {
+    header: "Distribuição não paramétrica",
+    text: "A distribuição da amostra é não paramétrica, há evidências que rejeitem a hipótese de distribuição normal:",
+    image: "img/medidas.jpg",
+  },
   descr_nominal: {
     header: "Variáveis Nominais",
-    text: "Para variáveis nominais, utilize medidas de <b>Frequência</b>.",
+    text: "Para variáveis nominais, utilize medidas de <b>Frequência absolua ou Frequência relativa</b>.",
     image: "img/frequencia.jpg",
     options: [{ text: "Entendido", next: "final_descr" }]
   },
@@ -192,3 +214,4 @@ document.getElementById("back-button").addEventListener("click", () => {
 });
 
 displayNode("start");
+
