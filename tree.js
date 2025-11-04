@@ -1,217 +1,204 @@
-// ======= Função para adicionar tooltips automáticos =======
-function addTooltips(text) {
-  const terms = {
-    "Paramétrica": "Análises que assumem distribuição normal e utilizam estatísticas baseadas em média e variância.",
-    "Não paramétrica": "Análises que não exigem distribuição normal; baseiam-se em postos ou frequências.",
-    "Ordinal": "Variáveis com ordem, mas sem intervalos iguais entre os valores (ex: nível de satisfação).",
-    "Nominal": "Categorias sem ordem (ex: gênero, cor dos olhos).",
-    "Escalar": "Variáveis numéricas contínuas com intervalos iguais (ex: idade, peso, pontuação)."
-  };
-  for (const [term, def] of Object.entries(terms)) {
-    const regex = new RegExp(`\\b${term}\\b`, "g");
-    text = text.replace(regex, `<span class="tooltip" data-tooltip="${def}">${term}</span>`);
+let history = []; // guarda o histórico de nós
+
+function displayNode(nodeKey) {
+  const node = decisionTree[nodeKey];
+  if (!node) return;
+
+  // Atualiza o histórico
+  if (history.length === 0 || history[history.length - 1] !== nodeKey) {
+    history.push(nodeKey);
   }
-  return text;
+
+  // Atualiza cabeçalho
+  document.getElementById("header").textContent = node.header || "Tomada de decisão estatística";
+
+  // Atualiza imagem
+  document.getElementById("node-image").src = node.image || "";
+
+  // Atualiza texto
+  document.getElementById("node-text").textContent = node.text;
+
+  // Atualiza opções
+  const optionsContainer = document.getElementById("options-container");
+  optionsContainer.innerHTML = "";
+
+  // Botão de voltar (aparece se não for o primeiro nó)
+  if (history.length > 1) {
+    const backButton = document.createElement("button");
+    backButton.textContent = "← Voltar";
+    backButton.classList.add("back-button");
+    backButton.addEventListener("click", () => {
+      history.pop(); // remove o nó atual
+      displayNode(history.pop()); // volta para o anterior
+    });
+    optionsContainer.appendChild(backButton);
+  }
+
+  // Se não houver opções, exibe texto final
+  if (!node.options || node.options.length === 0) {
+    const endText = document.createElement("p");
+    endText.textContent = "Fim da decisão.";
+    endText.classList.add("end-text");
+    optionsContainer.appendChild(endText);
+    return;
+  }
+
+  // Cria os botões de opção
+  node.options.forEach(option => {
+    const button = document.createElement("button");
+    button.classList.add("option-button");
+
+    const img = document.createElement("img");
+    img.src = option.image || "";
+    img.alt = option.text;
+    img.classList.add("option-image");
+
+    const label = document.createElement("span");
+    label.textContent = option.text;
+
+    button.appendChild(img);
+    button.appendChild(label);
+    button.addEventListener("click", () => displayNode(option.next));
+    optionsContainer.appendChild(button);
+  });
 }
 
-// ======= Árvore de decisão =======
+// ===== Estrutura da árvore =====
 const decisionTree = {
   start: {
     header: "Tomada de decisão estatística",
     text: "Qual é o objetivo da sua pesquisa?",
     image: "img/estatistica.jpg",
     options: [
-      { text: "Descrever / Avaliar", next: "descrever" },
-      { text: "Correlacionar", next: "correlacionar" },
-      { text: "Comparar", next: "comparar" },
-      { text: "Predizer", next: "predizer" },
-      { text: "Validar / Adaptar (Psicometria)", next: "validar" }
+      { text: "Descrever / Avaliar", image: "img/descrever.jpg", next: "descrever" },
+      { text: "Correlacionar", image: "img/correlacionar.jpg", next: "correlacionar" },
+      { text: "Comparar", image: "img/comparar.jpg", next: "comparar" },
+      { text: "Predizer", image: "img/predizer.jpg", next: "predizer" },
+      { text: "Validar / Adaptar (Psicometria)", image: "img/validar.jpg", next: "validar" }
     ]
   },
 
-  // ======= DESCREVER =======
   descrever: {
     header: "Descrição / Avaliação",
-    text: "O tipo de variável é <b>Ordinal ou Escalar</b>, ou <b>Nominal</b>?",
+    text: "Deseja apenas apresentar estatísticas descritivas ou realizar análises inferenciais?",
     image: "img/descrever.jpg",
     options: [
-      { text: "Ordinal ou Escalar", next: "descr_ordinal" },
-      { text: "Nominal", next: "descr_nominal" }
+      { text: "Somente descritivas", image: "img/tabela.jpg", next: "final_descritiva" },
+      { text: "Inferenciais", image: "img/inferencial.jpg", next: "final_inferencial" }
     ]
   },
 
-  descr_ordinal: {
-    header: "Variáveis Ordinais ou Escalares",
-    text: "Escolha as medidas descritivas desejadas:",
-    image: "img/medidas.jpg",
-    options: [
-      { text: "Desvio Padrão", next: "final_descr" },
-      { text: "Média", next: "final_descr" },
-      { text: "Mediana", next: "final_descr" }
-      { text: "Distribuição", next: "shapiro" }
-    ]
-  },
-  
- shapiro: {
-    header: "Distribuição",
-    text: "A distribuição da amostra é verificada por teste Shapiro-Wilk:",
-    image: "img/medidas.jpg",
-    text: 'Shapiro-Wilk avalia a distribuição em parmétrica e não paramétrica",
-   options: [
-   { text: "p valor maior que 0,05", next: "normal" },
-   { text: "p valor menor  ou igual que 0,05 ", next: "n_normal" },
-      ]
+  final_descritiva: {
+    header: "Resultado",
+    text: "Utilize medidas de tendência central (médias, medianas) e dispersão (desvio padrão, variância).",
+    image: "img/tabela.jpg",
+    options: []
   },
 
-   normal: {
-    header: "Distribuição paramétrica",
-    text: "A distribuição da amostra é paramétrica, não há evidências que rejeitem a hipótese de distribuição normal:",
-    image: "img/medidas.jpg",
-  },
-n_normal: {
-    header: "Distribuição não paramétrica",
-    text: "A distribuição da amostra é não paramétrica, há evidências que rejeitem a hipótese de distribuição normal:",
-    image: "img/medidas.jpg",
-  },
-  descr_nominal: {
-    header: "Variáveis Nominais",
-    text: "Para variáveis nominais, utilize medidas de <b>Frequência absolua ou Frequência relativa</b>.",
-    image: "img/frequencia.jpg",
-    options: [{ text: "Entendido", next: "final_descr" }]
+  final_inferencial: {
+    header: "Resultado",
+    text: "Considere testes de hipóteses conforme tipo de variável e número de grupos (ex: t, ANOVA, Qui-quadrado).",
+    image: "img/inferencial.jpg",
+    options: []
   },
 
-  // ======= CORRELACIONAR =======
   correlacionar: {
-    header: "Correlação entre variáveis",
-    text: "Sua análise será <b>Paramétrica</b> ou <b>Não Paramétrica</b>?",
+    header: "Correlação",
+    text: "Você deseja correlacionar variáveis contínuas ou ordinais?",
     image: "img/correlacionar.jpg",
     options: [
-      { text: "Paramétrica", next: "corr_param" },
-      { text: "Não Paramétrica", next: "corr_nparam" }
+      { text: "Contínuas", image: "img/continua.jpg", next: "final_pearson" },
+      { text: "Ordinais", image: "img/ordinal.jpg", next: "final_spearman" }
     ]
   },
 
-  corr_param: {
-    header: "Correlação Paramétrica",
-    text: "As variáveis são <b>Ordinal ou Escalar</b>, ou <b>Nominal</b>?",
-    image: "img/parametrica.jpg",
-    options: [
-      { text: "Ordinal ou Escalar", next: "pearson" },
-      { text: "Nominal", next: "ponto_biserial" }
-    ]
-  },
-
-  corr_nparam: {
-    header: "Correlação Não Paramétrica",
-    text: "As variáveis são <b>Ordinal ou Escalar</b>, ou <b>Nominal</b>?",
-    image: "img/nparametrica.jpg",
-    options: [
-      { text: "Ordinal ou Escalar", next: "spearman" },
-      { text: "Nominal", next: "chi_quadrado" }
-    ]
-  },
-
-  pearson: {
-    header: "Correlação de Pearson",
-    text: "Indicado para variáveis <b>Escalares</b> e distribuição normal.",
+  final_pearson: {
+    header: "Resultado",
+    text: "Utilize o coeficiente de correlação de Pearson (r).",
     image: "img/pearson.jpg",
-    options: [{ text: "Finalizar", next: "final" }]
+    options: []
   },
 
-  ponto_biserial: {
-    header: "Correlação Ponto-Biserial",
-    text: "Usada quando há uma variável <b>Nominal</b> dicotômica e outra <b>Escalar</b>.",
-    image: "img/ponto_biserial.jpg",
-    options: [{ text: "Finalizar", next: "final" }]
-  },
-
-  spearman: {
-    header: "Correlação de Spearman",
-    text: "Usada para variáveis <b>Ordinais</b> ou quando há violação de normalidade.",
+  final_spearman: {
+    header: "Resultado",
+    text: "Utilize o coeficiente de correlação de Spearman (ρ).",
     image: "img/spearman.jpg",
-    options: [{ text: "Finalizar", next: "final" }]
+    options: []
   },
 
-  chi_quadrado: {
-    header: "Qui-Quadrado",
-    text: "Usado para avaliar associação entre variáveis <b>Nominais</b>.",
-    image: "img/chi2.jpg",
-    options: [{ text: "Finalizar", next: "final" }]
-  },
-
-  // ======= PLACEHOLDERS =======
   comparar: {
-    header: "Comparar grupos",
-    text: "Aqui futuramente você poderá escolher entre análises <b>Paramétricas</b> e <b>Não Paramétricas</b> para comparação de médias.",
+    header: "Comparação",
+    text: "Quantos grupos você deseja comparar?",
     image: "img/comparar.jpg",
-    options: [{ text: "Voltar", next: "start" }]
+    options: [
+      { text: "2 grupos", image: "img/t.jpg", next: "final_t" },
+      { text: "3 ou mais grupos", image: "img/anova.jpg", next: "final_anova" }
+    ]
+  },
+
+  final_t: {
+    header: "Resultado",
+    text: "Use o teste t (independente ou pareado, conforme o caso).",
+    image: "img/t.jpg",
+    options: []
+  },
+
+  final_anova: {
+    header: "Resultado",
+    text: "Use ANOVA (one-way ou repeated measures, conforme o delineamento).",
+    image: "img/anova.jpg",
+    options: []
   },
 
   predizer: {
-    header: "Predição de variáveis",
-    text: "Esta seção abordará modelos de regressão e predição estatística.",
+    header: "Predição",
+    text: "Seu modelo envolve uma variável dependente contínua ou categórica?",
     image: "img/predizer.jpg",
-    options: [{ text: "Voltar", next: "start" }]
+    options: [
+      { text: "Contínua", image: "img/regressao.jpg", next: "final_regressao" },
+      { text: "Categórica", image: "img/logistica.jpg", next: "final_logistica" }
+    ]
+  },
+
+  final_regressao: {
+    header: "Resultado",
+    text: "Utilize Regressão Linear (simples ou múltipla).",
+    image: "img/regressao.jpg",
+    options: []
+  },
+
+  final_logistica: {
+    header: "Resultado",
+    text: "Utilize Regressão Logística (binária ou multinomial).",
+    image: "img/logistica.jpg",
+    options: []
   },
 
   validar: {
     header: "Validação / Psicometria",
-    text: "Nesta seção, serão incluídos métodos de <b>análise fatorial</b>, <b>alfa de Cronbach</b> e <b>correlação item-total</b>.",
+    text: "Deseja realizar uma análise exploratória ou confirmatória?",
     image: "img/validar.jpg",
-    options: [{ text: "Voltar", next: "start" }]
+    options: [
+      { text: "Exploratória", image: "img/afe.jpg", next: "final_afe" },
+      { text: "Confirmatória", image: "img/afc.jpg", next: "final_afc" }
+    ]
   },
 
-  // ======= FINAIS =======
-  final_descr: {
-    header: "Medidas descritivas",
-    text: "Você pode complementar sua análise com gráficos e medidas de dispersão.",
-    image: "img/final.jpg",
+  final_afe: {
+    header: "Resultado",
+    text: "Utilize Análise Fatorial Exploratória (AFE).",
+    image: "img/afe.jpg",
     options: []
   },
 
-  final: {
-    header: "Interpretação dos resultados",
-    text: "Lembre-se de reportar o <b>tamanho de efeito</b> e o <b>valor p</b> para suas análises de comparação ou correlação.",
-    image: "img/final.jpg",
+  final_afc: {
+    header: "Resultado",
+    text: "Utilize Análise Fatorial Confirmatória (AFC) via Modelagem de Equações Estruturais.",
+    image: "img/afc.jpg",
     options: []
   }
 };
 
-// ======= Lógica de navegação =======
-let history = [];
-
-function displayNode(nodeKey) {
-  const node = decisionTree[nodeKey];
-  if (!node) return;
-
-  if (history.length === 0 || history[history.length - 1] !== nodeKey) {
-    history.push(nodeKey);
-  }
-
-  document.getElementById("node-header").textContent = node.header;
-  document.getElementById("node-text").innerHTML = addTooltips(node.text);
-  document.getElementById("node-image").src = node.image;
-
-  const optionsDiv = document.getElementById("options");
-  optionsDiv.innerHTML = "";
-  node.options.forEach(opt => {
-    const btn = document.createElement("button");
-    btn.className = "option-button";
-    btn.innerHTML = addTooltips(opt.text);
-    btn.onclick = () => displayNode(opt.next);
-    optionsDiv.appendChild(btn);
-  });
-
-  document.getElementById("back-button").style.display = history.length > 1 ? "inline-block" : "none";
-}
-
-document.getElementById("back-button").addEventListener("click", () => {
-  if (history.length > 1) {
-    history.pop();
-    const previousNode = history[history.length - 1];
-    displayNode(previousNode);
-  }
-});
-
+// ===== Inicializa a árvore =====
 displayNode("start");
 
