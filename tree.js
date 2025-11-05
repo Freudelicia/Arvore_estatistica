@@ -30,7 +30,7 @@ const decisionTree = {
   },
 
   // ======= DESCREVER =======
-  descrever: {
+ descrever: {
     header: "Descrição / Avaliação",
     text: "O tipo de variável é <b>Ordinal ou Escalar</b>, ou <b>Nominal</b>?",
     image: "img/descrever.jpg",
@@ -42,15 +42,55 @@ const decisionTree = {
 
   descr_ordinal: {
     header: "Variáveis Ordinais ou Escalares",
-    text: "Escolha as medidas descritivas desejadas:",
+    text: "Escolha uma opção de análise:",
     image: "img/medidas.jpg",
     options: [
-      { text: "Desvio Padrão", next: "final_descr" },
-      { text: "Média", next: "final_descr" },
-      { text: "Mediana", next: "final_descr" }
+      { text: "Distribuição (Shapiro-Wilk)", next: "shapiro" },
+      { text: "Paramétrico", next: "descr_parametrico" },
+      { text: "Não Paramétrico", next: "descr_nparametrico" }
     ]
   },
 
+  // ======= TESTE DE NORMALIDADE =======
+  shapiro: {
+    header: "Teste de Normalidade - Shapiro-Wilk",
+    text: "Selecione o resultado do teste:",
+    image: "img/shapiro.jpg",
+    options: [
+      { text: "p-valor > 0,05", next: "shapiro_maior" },
+      { text: "p-valor < 0,05", next: "shapiro_menor" }
+    ]
+  },
+
+  shapiro_maior: {
+    header: "Interpretação: p > 0,05",
+    text: "Os dados seguem distribuição normal. É possível utilizar testes <b>Paramétricos</b>.",
+    image: "img/normal.jpg",
+    options: [{ text: "Finalizar", next: "final_descr" }]
+  },
+
+  shapiro_menor: {
+    header: "Interpretação: p < 0,05",
+    text: "Os dados <b>não seguem</b> distribuição normal. Utilize testes <b>Não Paramétricos</b>.",
+    image: "img/nonnormal.jpg",
+    options: [{ text: "Finalizar", next: "final_descr" }]
+  },
+
+  descr_parametrico: {
+    header: "Análises Paramétricas",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sed purus vel justo tempus blandit. Donec in imperdiet arcu.",
+    image: "img/parametrico.jpg",
+    options: [{ text: "Finalizar", next: "final_descr" }]
+  },
+
+  descr_nparametrico: {
+    header: "Análises Não Paramétricas",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus non lectus nec neque efficitur rhoncus. Ut consequat augue et velit imperdiet posuere.",
+    image: "img/nparametrico.jpg",
+    options: [{ text: "Finalizar", next: "final_descr" }]
+  },
+
+  // ======= NOMINAL =======
   descr_nominal: {
     header: "Variáveis Nominais",
     text: "Para variáveis nominais, utilize medidas de <b>Frequência</b>.",
@@ -59,71 +99,121 @@ const decisionTree = {
   },
 
   // ======= CORRELACIONAR =======
-  correlacionar: {
+ correlacionar: {
     header: "Correlação entre variáveis",
-    text: "Sua análise será <b>Paramétrica</b> ou <b>Não Paramétrica</b>?",
+    text: "Escolha o tipo de análise de correlação desejada:",
     image: "img/correlacionar.jpg",
     options: [
-      { text: "Paramétrica", next: "corr_param" },
-      { text: "Não Paramétrica", next: "corr_nparam" }
+      { text: "Paramétrica", next: "corr_parametrica" },
+      { text: "Não Paramétrica", next: "corr_nparametrica" },
+      { text: "Nominal", next: "corr_nominal" }
     ]
   },
 
-  corr_param: {
+  // ======= PARAMÉTRICA =======
+  corr_parametrica: {
     header: "Correlação Paramétrica",
-    text: "As variáveis são <b>Ordinal ou Escalar</b>, ou <b>Nominal</b>?",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam id enim in velit dapibus ultricies. Praesent luctus, lorem at placerat tincidunt, nisl sem vehicula lacus, non fringilla neque justo vitae erat.",
     image: "img/parametrica.jpg",
-    options: [
-      { text: "Ordinal ou Escalar", next: "pearson" },
-      { text: "Nominal", next: "ponto_biserial" }
-    ]
+    options: [{ text: "Finalizar", next: "final" }]
   },
 
-  corr_nparam: {
+  // ======= NÃO PARAMÉTRICA =======
+  corr_nparametrica: {
     header: "Correlação Não Paramétrica",
-    text: "As variáveis são <b>Ordinal ou Escalar</b>, ou <b>Nominal</b>?",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ultricies magna et sapien luctus, non gravida mi volutpat. Vivamus at bibendum urna, ac imperdiet odio.",
     image: "img/nparametrica.jpg",
+    options: [{ text: "Finalizar", next: "final" }]
+  },
+
+  // ======= NOMINAL =======
+  corr_nominal: {
+    header: "Correlação Nominal",
+    text: "Para variáveis nominais, selecione a situação que melhor descreve seu caso:",
+    image: "img/nominal.jpg",
     options: [
-      { text: "Ordinal ou Escalar", next: "spearman" },
-      { text: "Nominal", next: "chi_quadrado" }
+      { text: "Associação entre duas variáveis nominais", next: "corr_nominal_assoc" },
+      { text: "Associação entre variável nominal e ordinal", next: "corr_nominal_ord" }
     ]
   },
 
-  pearson: {
-    header: "Correlação de Pearson",
-    text: "Indicado para variáveis <b>Escalares</b> e distribuição normal.",
-    image: "img/pearson.jpg",
-    options: [{ text: "Finalizar", next: "final" }]
-  },
-
-  ponto_biserial: {
-    header: "Correlação Ponto-Biserial",
-    text: "Usada quando há uma variável <b>Nominal</b> dicotômica e outra <b>Escalar</b>.",
-    image: "img/ponto_biserial.jpg",
-    options: [{ text: "Finalizar", next: "final" }]
-  },
-
-  spearman: {
-    header: "Correlação de Spearman",
-    text: "Usada para variáveis <b>Ordinais</b> ou quando há violação de normalidade.",
-    image: "img/spearman.jpg",
-    options: [{ text: "Finalizar", next: "final" }]
-  },
-
-  chi_quadrado: {
-    header: "Qui-Quadrado",
-    text: "Usado para avaliar associação entre variáveis <b>Nominais</b>.",
+  corr_nominal_assoc: {
+    header: "Associação entre variáveis nominais",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce cursus felis sed tellus finibus, in hendrerit lorem fermentum.",
     image: "img/chi2.jpg",
     options: [{ text: "Finalizar", next: "final" }]
   },
 
-  // ======= PLACEHOLDERS =======
+  corr_nominal_ord: {
+    header: "Associação entre variável nominal e ordinal",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer tincidunt convallis tortor, sit amet cursus elit ullamcorper vel.",
+    image: "img/nominal_ordinal.jpg",
+    options: [{ text: "Finalizar", next: "final" }]
+  },
+
+ // ======= COMPARAR =======
   comparar: {
     header: "Comparar grupos",
-    text: "Aqui futuramente você poderá escolher entre análises <b>Paramétricas</b> e <b>Não Paramétricas</b> para comparação de médias.",
+    text: "Selecione a quantidade de grupos que deseja comparar:",
     image: "img/comparar.jpg",
-    options: [{ text: "Voltar", next: "start" }]
+    options: [
+      { text: "2 grupos", next: "comparar_2grupos" },
+      { text: "3 ou mais grupos", next: "comparar_3grupos" }
+    ]
   },
+
+  // ======= 2 GRUPOS =======
+  comparar_2grupos: {
+    header: "Comparação entre 2 grupos",
+    text: "Escolha o tipo de teste a ser utilizado:",
+    image: "img/2grupos.jpg",
+    options: [
+      { text: "Paramétrica", next: "comparar_2_param" },
+      { text: "Não Paramétrica", next: "comparar_2_nparam" }
+    ]
+  },
+
+  comparar_2_param: {
+    header: "Teste Paramétrico - 2 Grupos",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce et justo at sapien cursus vestibulum. Etiam dictum mi at ligula tristique, in suscipit justo lacinia.",
+    image: "img/t_parametrico2.jpg",
+    options: [{ text: "Finalizar", next: "final" }]
+  },
+
+  comparar_2_nparam: {
+    header: "Teste Não Paramétrico - 2 Grupos",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ut lacus vitae justo condimentum tincidunt. Aliquam erat volutpat.",
+    image: "img/t_nparametrico2.jpg",
+    options: [{ text: "Finalizar", next: "final" }]
+  },
+
+  // ======= 3 OU MAIS GRUPOS =======
+  comparar_3grupos: {
+    header: "Comparação entre 3 ou mais grupos",
+    text: "Escolha o tipo de teste a ser utilizado:",
+    image: "img/3grupos.jpg",
+    options: [
+      { text: "Paramétrica", next: "comparar_3_param" },
+      { text: "Não Paramétrica", next: "comparar_3_nparam" }
+    ]
+  },
+
+  comparar_3_param: {
+    header: "Teste Paramétrico - 3 ou mais Grupos",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum vel sem eget nisl gravida sollicitudin nec non urna.",
+    image: "img/anova.jpg",
+    options: [{ text: "Finalizar", next: "final" }]
+  },
+
+  comparar_3_nparam: {
+    header: "Teste Não Paramétrico - 3 ou mais Grupos",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur porttitor sapien non dolor suscipit, ut accumsan justo pharetra.",
+    image: "img/kruskal.jpg",
+    options: [{ text: "Finalizar", next: "final" }]
+  },
+  
+  // ======= PLACEHOLDERS =======
+
 
   predizer: {
     header: "Predição de variáveis",
@@ -192,3 +282,4 @@ document.getElementById("back-button").addEventListener("click", () => {
 });
 
 displayNode("start");
+
