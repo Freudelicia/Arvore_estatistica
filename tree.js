@@ -5,7 +5,9 @@ function addTooltips(text) {
     "Não paramétrica": "Análises que não exigem distribuição normal; baseiam-se em postos ou frequências.",
     "Ordinal": "Variáveis com ordem, mas sem intervalos iguais entre os valores (ex: nível de satisfação).",
     "Nominal": "Categorias sem ordem (ex: gênero, cor dos olhos).",
-    "Escalar": "Variáveis numéricas contínuas com intervalos iguais (ex: idade, peso, pontuação)."
+    "Escalar": "Variáveis numéricas contínuas com intervalos iguais (ex: idade, peso, pontuação).",
+    "Top down": "Lorem ipsum dolor sit amet. Et enim nobis et quia maiores sed ipsa nihil et .",
+    "Bottom up": "Lorem ipsum dolor sit amet. Et enim nobis et quia maiores sed ipsa nihil et ."
   };
   for (const [term, def] of Object.entries(terms)) {
     const regex = new RegExp(`\\b${term}\\b`, "g");
@@ -211,23 +213,58 @@ const decisionTree = {
     image: "img/kruskal.jpg",
     options: [{ text: "Finalizar", next: "final" }]
   },
-  
-  // ======= PLACEHOLDERS =======
 
 
+    // ======= PREDIZER =======
   predizer: {
     header: "Predição de variáveis",
-    text: "Esta seção abordará modelos de regressão e predição estatística.",
+    text: "Escolha o tipo de modelo de regressão que deseja utilizar:",
     image: "img/predizer.jpg",
-    options: [{ text: "Voltar", next: "start" }]
+    options: [
+      { text: "Linear", next: "pred_linear" },
+      { text: "Logística", next: "pred_logistica" }
+    ]
   },
 
+  pred_linear: {
+    header: "Regressão Linear",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed orci a eros aliquet facilisis. Nam sagittis quam vel est porta, vel tristique elit bibendum. Phasellus vitae efficitur lorem.",
+    image: "img/reg_linear.jpg",
+    options: [{ text: "Finalizar", next: "final" }]
+  },
+
+  pred_logistica: {
+    header: "Regressão Logística",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur convallis nibh a mi volutpat, in tristique urna maximus. Praesent et faucibus sem. Nullam id ligula in nulla fermentum tincidunt.",
+    image: "img/reg_logistica.jpg",
+    options: [{ text: "Finalizar", next: "final" }]
+  },
+
+  // ======= VALIDAR / PSICOMETRIA =======
   validar: {
     header: "Validação / Psicometria",
-    text: "Nesta seção, serão incluídos métodos de <b>análise fatorial</b>, <b>alfa de Cronbach</b> e <b>correlação item-total</b>.",
+    text: "Escolha a abordagem teórica da sua análise fatorial:",
     image: "img/validar.jpg",
-    options: [{ text: "Voltar", next: "start" }]
+    options: [
+      { text: "Top Down", next: "afc" },     // Com teoria
+      { text: "Bottom Up", next: "afe" }     // Sem teoria
+    ]
   },
+
+  afc: {
+    header: "Análise Fatorial Confirmatória (AFC)",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sit amet facilisis nulla. Vestibulum ac dolor ac purus hendrerit efficitur. Integer sagittis tortor non dolor tempus, eget viverra massa fermentum.",
+    image: "img/afc.jpg",
+    options: [{ text: "Finalizar", next: "final" }]
+  },
+
+  afe: {
+    header: "Análise Fatorial Exploratória (AFE)",
+    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus suscipit felis at eros imperdiet, at consequat ex dignissim. Mauris id nulla id arcu dictum accumsan. Donec ullamcorper sapien a metus dictum, et bibendum enim malesuada.",
+    image: "img/afe.jpg",
+    options: [{ text: "Finalizar", next: "final" }]
+  },
+
 
   // ======= FINAIS =======
   final_descr: {
@@ -282,4 +319,5 @@ document.getElementById("back-button").addEventListener("click", () => {
 });
 
 displayNode("start");
+
 
