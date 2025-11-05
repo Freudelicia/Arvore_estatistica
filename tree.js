@@ -6,8 +6,8 @@ function addTooltips(text) {
     "Ordinal": "Variáveis com ordem, mas sem intervalos iguais entre os valores (ex: nível de satisfação).",
     "Nominal": "Categorias sem ordem (ex: gênero, cor dos olhos).",
     "Escalar": "Variáveis numéricas contínuas com intervalos iguais (ex: idade, peso, pontuação).",
-    "Top down": "Lorem ipsum dolor sit amet. Et enim nobis et quia maiores sed ipsa nihil et .",
-    "Bottom up": "Lorem ipsum dolor sit amet. Et enim nobis et quia maiores sed ipsa nihil et ."
+    "Top Down": "Lorem ipsum dolor sit amet. Et enim nobis et quia maiores sed ipsa nihil et .",
+    "Bottom Up": "Lorem ipsum dolor sit amet. Et enim nobis et quia maiores sed ipsa nihil et ."
   };
   for (const [term, def] of Object.entries(terms)) {
     const regex = new RegExp(`\\b${term}\\b`, "g");
@@ -319,5 +319,6 @@ document.getElementById("back-button").addEventListener("click", () => {
 });
 
 displayNode("start");
+
 
 
